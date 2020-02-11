@@ -10,5 +10,7 @@ namespace Training.Data.Models
         public int Quantity { get; set; }
         public Guid ProductId { get; set; }
 
+        public Product Product { get; set; }
+
     }
 }

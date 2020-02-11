@@ -11,7 +11,8 @@ namespace Training.Data.Extensions
             {
                 Id = u.Id.ToString(),
                 Email = u.Email,
-                FullName = u.FullName
+                FullName = u.FullName,
+                Gender = u.Gender
             };
         }
 
