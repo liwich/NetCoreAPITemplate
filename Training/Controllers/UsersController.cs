@@ -36,7 +36,7 @@ namespace Training.Controllers
 
         [HttpPost]
         [Route("signup")]
-        public async Task<DTO.User> SignUp(UserSignup user)
+        public async Task<DTO.User> SignUp(UserCredentials user)
         {
             return await _IoC.GetService<SignUp>().Execute(user);
         }

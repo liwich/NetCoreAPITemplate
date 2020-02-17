@@ -19,14 +19,14 @@ namespace Training.API.Operations.Users
 
         }
 
-        public async Task<DTO.User> Execute(UserSignup user)
+        public async Task<DTO.User> Execute(UserCredentials user)
         {
             await ValidateUserExists(user);
             user.Password = _PasswordHasher.GenerateIdentityV3Hash(user.Password);
             return await _UsersRepository.Create(user);
         }
 
-        private async Task ValidateUserExists(UserSignup user)
+        private async Task ValidateUserExists(UserCredentials user)
         {
             if (await _UsersRepository.Exists(user))
             {

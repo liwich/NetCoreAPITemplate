@@ -8,8 +8,8 @@ namespace Training.API.Contracts
     {
         Task<List<User>> GetAll();
 
-        Task<User> Create(UserSignup user);
+        Task<User> Create(UserCredentials user);
 
-        Task<bool> Exists(UserSignup user);
+        Task<bool> Exists(UserCredentials user);
     }
 }

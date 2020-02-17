@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Training.DTO
 {
-    public class UserSignup : User
+    public class UserCredentials : User
     {
         [JsonProperty("password")]
         [RegularExpression(".*[0-9].*", ErrorMessage = "Password must contain at least 1 numeric character")]

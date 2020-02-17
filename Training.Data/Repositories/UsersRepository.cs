@@ -23,7 +23,7 @@ namespace Training.Data.Repositories
             return usersDTOList;
         }
 
-        public async Task<DTO.User> Create(DTO.UserSignup user)
+        public async Task<DTO.User> Create(DTO.UserCredentials user)
         {
             Models.User userDb = new Models.User()
             {
@@ -38,7 +38,7 @@ namespace Training.Data.Repositories
             return d.Entity.ToDTO();
         }
 
-        public async Task<bool> Exists(DTO.UserSignup user)
+        public async Task<bool> Exists(DTO.UserCredentials user)
         {
             return await _StoreContext.Users.AnyAsync(x => x.Email == user.Email);
         }
