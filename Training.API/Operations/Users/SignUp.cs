@@ -22,6 +22,7 @@ namespace Training.API.Operations.Users
         public async Task<DTO.User> Execute(UserCredentials user)
         {
             await ValidateUserExists(user);
+            user.Role = "Default";
             user.Password = _PasswordHasher.GenerateIdentityV3Hash(user.Password);
             return await _UsersRepository.Create(user);
         }

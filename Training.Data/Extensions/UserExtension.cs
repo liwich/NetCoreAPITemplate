@@ -16,7 +16,20 @@ namespace Training.Data.Extensions
             };
         }
 
-        public static Models.User ToDatabaseModel(this DTO.User u)
+        public static DTO.UserCredentials ToCredentialsDTO(this Models.User u)
+        {
+            return new DTO.UserCredentials
+            {
+                Id = u.Id.ToString(),
+                Email = u.Email,
+                FullName = u.FullName,
+                Gender = u.Gender,
+                Password = u.Password,
+                Role = u.Role
+            };
+        }
+
+        public static Models.User ToDatabaseModel(this DTO.UserCredentials u)
         {
             return new Models.User
             {
@@ -24,7 +37,9 @@ namespace Training.Data.Extensions
                 Email = u.Email,
                 FullName = u.FullName,
                 Gender = u.Gender,
-
+                Password = u.Password,
+                RefreshToken = u.RefreshToken,
+                Role = u.Role
             };
         }
     }

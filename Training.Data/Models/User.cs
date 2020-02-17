@@ -12,5 +12,8 @@ namespace Training.Data.Models
         List<Order> Orders { get; set; }
         public string Password { get; set; }
         public string Gender { get; set; }
+        public string RefreshToken { get; set; }
+
+        public string Role { get; set; }
     }
 }

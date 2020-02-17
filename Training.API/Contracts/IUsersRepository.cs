@@ -8,8 +8,12 @@ namespace Training.API.Contracts
     {
         Task<List<User>> GetAll();
 
+        UserCredentials GetUserCredentialsByEmail(string email);
+
         Task<User> Create(UserCredentials user);
 
         Task<bool> Exists(UserCredentials user);
+
+        Task<UserCredentials> Update(UserCredentials user);
     }
 }

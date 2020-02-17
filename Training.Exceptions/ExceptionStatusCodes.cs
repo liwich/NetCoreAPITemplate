@@ -14,7 +14,8 @@ namespace Training.Exceptions
             {typeof(ObjectDoesNotExistException), HttpStatusCode.NotFound},
             {typeof(DuplicateException), HttpStatusCode.Conflict},
             {typeof(PreconditionFailedException), HttpStatusCode.PreconditionFailed},
-            {typeof(ExpectationFailedException), HttpStatusCode.ExpectationFailed}
+            {typeof(ExpectationFailedException), HttpStatusCode.ExpectationFailed},
+            {typeof(InvalidCredentialsException), HttpStatusCode.Unauthorized}
         };
     }
 }

@@ -79,6 +79,7 @@ namespace Training
         {
             services.AddTransient<GetAll>();
             services.AddTransient<SignUp>();
+            services.AddTransient<SignIn>();
         }
 
         public void ConfigureInfrastructureServices(IServiceCollection services)
