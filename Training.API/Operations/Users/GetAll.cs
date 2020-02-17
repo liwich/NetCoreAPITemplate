@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Training.API.Contracts;
 
-namespace Training.API.Operations
+namespace Training.API.Operations.Users
 {
-    public class GetUsers
+    public class GetAll
     {
         private readonly IUsersRepository _UsersRepository;
 
-        public GetUsers(IUsersRepository usersRepository)
+        public GetAll(IUsersRepository usersRepository)
         {
             _UsersRepository = usersRepository;
         }

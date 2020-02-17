@@ -1,13 +1,21 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Text;
+using System.Threading.Tasks;
 using Training.API.Contracts;
-using Training.API.Operations;
+using Training.API.Contracts.Services;
+using Training.API.Operations.Users;
 using Training.Data;
 using Training.Data.Repositories;
+using Training.Exceptions;
+using Training.Services;
 
 namespace Training
 {
@@ -26,17 +34,57 @@ namespace Training
             var connection = Configuration.GetConnectionString("sqlserver");
             services.AddDbContext<StoreContext>
                 (options => options.UseSqlServer(connection));
-
+            services.AddTransient<ErrorHandlingMiddleware>();
+            ConfigureAuthentication(services);
             ConfigureOperations(services);
             ConfigureRepositories(services);
+            ConfigureInfrastructureServices(services);
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);   
+        }
+
+        public void ConfigureAuthentication(IServiceCollection services)
+        {
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = "bearer";
+            }).AddJwtBearer("bearer", options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateAudience = false,
+                    ValidateIssuer = false,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["serverSigningPassword"])),
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero //the default for this setting is 5 minutes
+                };
+
+                options.Events = new JwtBearerEvents
+                {
+                    OnAuthenticationFailed = context =>
+                    {
+                        if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                        {
+                            context.Response.Headers.Add("Token-Expired", "true");
+                        }
+                        return Task.CompletedTask;
+                    }
+                };
+            });
         }
 
 
         public void ConfigureOperations(IServiceCollection services)
         {
-            services.AddTransient<GetUsers>();
+            services.AddTransient<GetAll>();
+            services.AddTransient<SignUp>();
+        }
+
+        public void ConfigureInfrastructureServices(IServiceCollection services)
+        {
+            services.AddScoped<IPasswordHasher, PasswordHasher>();
+            services.AddScoped<ITokenService, TokenService>();
         }
 
         public void ConfigureRepositories(IServiceCollection services)
@@ -56,6 +104,8 @@ namespace Training
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseErrorHandlingMiddleware();
 
             app.UseHttpsRedirection();
             app.UseMvc();

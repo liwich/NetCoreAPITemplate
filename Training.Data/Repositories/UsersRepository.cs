@@ -22,5 +22,25 @@ namespace Training.Data.Repositories
             var usersDTOList = users.Select(x => x.ToDTO()).ToList();
             return usersDTOList;
         }
+
+        public async Task<DTO.User> Create(DTO.UserSignup user)
+        {
+            Models.User userDb = new Models.User()
+            {
+                Email = user.Email,
+                FullName = user.FullName,
+                Gender = user.Gender,
+                Password = user.Password
+            };
+
+            var d = await _StoreContext.AddAsync(userDb);
+            await _StoreContext.SaveChangesAsync();
+            return d.Entity.ToDTO();
+        }
+
+        public async Task<bool> Exists(DTO.UserSignup user)
+        {
+            return await _StoreContext.Users.AnyAsync(x => x.Email == user.Email);
+        }
     }
 }

@@ -17,6 +17,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Training.API\Training.API.csproj" />
     <ProjectReference Include="..\Training.Data\Training.Data.csproj" />
+    <ProjectReference Include="..\Training.Exceptions\Training.Exceptions.csproj" />
+    <ProjectReference Include="..\Training.Services\Training.Services.csproj" />
   </ItemGroup>
 
 </Project>
